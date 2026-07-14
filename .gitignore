@@ -1,0 +1,57 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Flutter / Dart
+.dart_tool/
+.packages
+.pub/
+.pub-cache/
+build/
+coverage/
+flutter_export_environment.sh
+
+# Flutter generated plugin files
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android
+.gradle/
+local.properties
+key.properties
+*.jks
+*.keystore
+
+# iOS / macOS
+Pods/
+.symlinks/
+DerivedData/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# Java / Spring Boot
+target/
+*.class
+*.jar
+*.war
+*.log
+
+# Environment and secrets
+.env
+.env.*
+application-local.yml
+application-local.yaml
+application-secret.yml
+application-secret.yaml
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker local data
+docker-data/
