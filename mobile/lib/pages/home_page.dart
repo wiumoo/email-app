@@ -5,7 +5,9 @@ import 'mail_list_page.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final VoidCallback onLogout;
+
+  const HomePage({super.key, required this.onLogout});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,25 +16,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
 
-  final List<Widget> pages = const [
-    MailListPage(),
-    AiPage(),
-    SettingsPage(),
-  ];
-
-  void changePage(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final pages = [
+      const MailListPage(),
+      const AiPage(),
+      SettingsPage(onLogout: widget.onLogout),
+    ];
+
     return Scaffold(
       body: pages[selectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
-        onDestinationSelected: changePage,
+        onDestinationSelected: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.inbox_outlined),

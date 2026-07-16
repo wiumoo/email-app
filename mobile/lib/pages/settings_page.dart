@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+  final VoidCallback onLogout;
+
+  const SettingsPage({super.key, required this.onLogout});
 
   void openAccountConnectionPage(BuildContext context) {
     Navigator.push(
@@ -12,28 +14,48 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  void confirmLogout(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('로그아웃'),
+          content: const Text('현재 앱 계정에서 로그아웃하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('취소'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                onLogout();
+              },
+              child: const Text('로그아웃'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('설정'),
-      ),
+      appBar: AppBar(title: const Text('설정')),
       body: ListView(
         children: [
           const Padding(
             padding: EdgeInsets.fromLTRB(20, 24, 20, 12),
             child: Text(
               '연결된 메일 계정',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           const ListTile(
-            leading: CircleAvatar(
-              child: Icon(Icons.email_outlined),
-            ),
+            leading: CircleAvatar(child: Icon(Icons.email_outlined)),
             title: Text('연결된 계정이 없습니다'),
             subtitle: Text('메일 계정을 연결해 통합 받은편지함을 사용하세요.'),
           ),
@@ -45,6 +67,14 @@ class SettingsPage extends StatelessWidget {
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               openAccountConnectionPage(context);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('로그아웃'),
+            onTap: () {
+              confirmLogout(context);
             },
           ),
         ],
@@ -62,8 +92,7 @@ class MailAccountConnectionPage extends StatefulWidget {
   }
 }
 
-class _MailAccountConnectionPageState
-    extends State<MailAccountConnectionPage> {
+class _MailAccountConnectionPageState extends State<MailAccountConnectionPage> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -89,9 +118,7 @@ class _MailAccountConnectionPageState
       isConnecting = true;
     });
 
-    await Future<void>.delayed(
-      const Duration(seconds: 1),
-    );
+    await Future<void>.delayed(const Duration(seconds: 1));
 
     if (!mounted) {
       return;
@@ -103,9 +130,7 @@ class _MailAccountConnectionPageState
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          '${emailController.text} 계정 연결 기능은 백엔드 단계에서 구현합니다.',
-        ),
+        content: Text('${emailController.text} 계정 연결 기능은 백엔드 단계에서 구현합니다.'),
       ),
     );
   }
@@ -113,9 +138,7 @@ class _MailAccountConnectionPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('메일 계정 연결'),
-      ),
+      appBar: AppBar(title: const Text('메일 계정 연결')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -125,27 +148,15 @@ class _MailAccountConnectionPageState
             children: [
               const Text(
                 '메일 계정 정보를 입력하세요.',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                '일부 서비스는 일반 비밀번호 대신 앱 비밀번호가 필요할 수 있습니다.',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 24),
               TextFormField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
-                autofillHints: const [
-                  AutofillHints.email,
-                ],
                 decoration: const InputDecoration(
                   labelText: '이메일 주소',
-                  hintText: 'example@email.com',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email_outlined),
                 ),
                 validator: (value) {
                   final email = value?.trim() ?? '';
@@ -165,13 +176,9 @@ class _MailAccountConnectionPageState
               TextFormField(
                 controller: passwordController,
                 obscureText: hidePassword,
-                autofillHints: const [
-                  AutofillHints.password,
-                ],
                 decoration: InputDecoration(
                   labelText: '비밀번호 또는 앱 비밀번호',
                   border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
                     onPressed: () {
                       setState(() {
@@ -192,25 +199,11 @@ class _MailAccountConnectionPageState
 
                   return null;
                 },
-                onFieldSubmitted: (_) {
-                  connectAccount();
-                },
               ),
               const SizedBox(height: 24),
-              FilledButton.icon(
+              FilledButton(
                 onPressed: isConnecting ? null : connectAccount,
-                icon: isConnecting
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Icon(Icons.link),
-                label: Text(
-                  isConnecting ? '연결 확인 중...' : '계정 연결',
-                ),
+                child: Text(isConnecting ? '연결 확인 중...' : '계정 연결'),
               ),
             ],
           ),

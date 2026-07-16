@@ -9,9 +9,7 @@ class MailListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('통합 받은편지함'),
-      ),
+      appBar: AppBar(title: const Text('통합 받은편지함')),
       body: ListView.separated(
         itemCount: dummyMails.length,
         separatorBuilder: (context, index) {
@@ -21,14 +19,10 @@ class MailListPage extends StatelessWidget {
           final mail = dummyMails[index];
 
           return ListTile(
-            leading: CircleAvatar(
-              child: Text(mail.sender.substring(0, 1)),
-            ),
+            leading: CircleAvatar(child: Text(mail.sender.substring(0, 1))),
             title: Text(
               mail.sender,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
