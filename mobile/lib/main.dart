@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pages/mail_list_page.dart';
+import 'pages/home_page.dart';
 
 void main() {
   runApp(const EmailApp());
@@ -20,7 +20,7 @@ class EmailApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const MailListPage(),
+      home: const HomePage(),
     );
   }
 }
